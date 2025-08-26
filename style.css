@@ -1,0 +1,397 @@
+body {
+    background-color: black;
+    display: grid;
+    grid-template-columns: 1fr 7.5fr;
+    grid-template-rows: 2fr 6fr;
+    gap: 2rem;
+    height: 100vh;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    margin-bottom: 0px;
+    /* Existing styles */
+    position: relative; /* This is crucial for positioning the video */
+    overflow: hidden; /* Prevents scrollbars from appearing */
+}   
+
+video {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -1; /* Places the video behind all other content */
+    transform: translateX(-50%) translateY(-50%);
+    background-size: cover;
+    opacity: 0.4;
+}
+
+#left {
+    grid-area: 1 / 1 / 3 / 2;
+    display: flex; 
+    flex-direction: column;
+    justify-content: center;
+}
+
+#right {
+    grid-area: 2 / 2 / 3 / 3;
+    display: flex;
+    overflow: hidden; /* Prevents content from overflowing the right div */
+    align-items: center;
+}
+
+#planet-container {
+    display: flex;
+    gap: 17rem; /* Matched with the 3rem (48px) value in JavaScript */
+    white-space: nowrap;
+    transition: transform 1s ease-in-out;
+}
+
+.scroller {
+    transition: transform 1s ease-in-out; /* Transition effect for the scroll animation */
+}
+
+#top {
+    grid-area: 1 / 2 / 2 / 3;
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; /* Centers items horizontally */
+    justify-content: center; /* Centers items vertically */
+    margin-top: 2rem;
+    /* Add this line to ensure text fits */
+    min-height: 0; /* Ensures flexible content */
+}
+
+#top h1  {font-size: 2.8rem;}
+
+#top p {
+    font-size: 1.4rem; 
+    width: 70%;
+    margin-bottom: 10px; /* Add margin below the paragraph */
+}
+
+#top button {
+    font-size: 1.2rem; 
+    margin-top: 0.5rem;
+    padding: 0.5rem; 
+    border-radius: 10px; 
+    opacity: 0;
+    /* Add the border and transition properties here directly */
+    border: 3px solid; 
+    color: white;
+    /* This transition is crucial for a smooth visual change */
+    transition: opacity 1.5s ease-out, background 0.5s ease-in-out, border-color 0.5s ease-in-out;
+}
+
+
+/* This is a new CSS block that we'll dynamically add/remove with JavaScript */
+#top button.mercury-bg {
+    background: linear-gradient(90deg, #9C897B, #B4A496, #D4C3B5, #B4A496, #9C897B);
+    background-size: 400% 400%;
+    animation: gradientFlow 5s ease-in-out infinite;
+    border-color: #D4C3B5;
+}
+
+#top button.venus-bg {
+    background: linear-gradient(90deg, #FAD6A5, #F5B05A, #D69145, #F5B05A, #FAD6A5);
+    background-size: 400% 400%;
+    animation: gradientFlow 5s ease-in-out infinite;
+    border-color: #F5B05A;
+}
+
+#top button.earth-bg {
+    background: linear-gradient(90deg, #3A73AA, #5BA3E2, #7AC9E6, #5BA3E2, #3A73AA);
+    background-size: 400% 400%;
+    animation: gradientFlow 5s ease-in-out infinite;
+    border-color: #7AC9E6;
+}
+
+#top button.mars-bg {
+    background: linear-gradient(90deg, #C1440E, #FF7B0F, #F4A460, #FF7B0F, #C1440E);
+    background-size: 400% 400%;
+    animation: gradientFlow 5s ease-in-out infinite;
+    border-color: #FF7B0F;
+}
+
+#top button.jupiter-bg {
+    background: linear-gradient(90deg, #C4914F, #E5C397, #F2E4D5, #E5C397, #C4914F);
+    background-size: 400% 400%;
+    animation: gradientFlow 5s ease-in-out infinite;
+    border-color: #E5C397;
+}
+
+#top button.saturn-bg {
+    background: linear-gradient(90deg, #D4B483, #EAC799, #F5E0C2, #EAC799, #D4B483);
+    background-size: 400% 400%;
+    animation: gradientFlow 5s ease-in-out infinite;
+    border-color: #EAC799;
+}
+
+#top button.uranus-bg {
+    background: linear-gradient(90deg, #A8D8D8, #C8E8E8, #E0F2F2, #C8E8E8, #A8D8D8);
+    background-size: 400% 400%;
+    animation: gradientFlow 5s ease-in-out infinite;
+    border-color: #C8E8E8;
+}
+
+#top button.neptune-bg {
+    background: linear-gradient(90deg, #3B6B8F, #4A84B3, #599ED7, #4A84B3, #3B6B8F);
+    background-size: 400% 400%;
+    animation: gradientFlow 5s ease-in-out infinite;
+    border-color: #599ED7;
+}
+
+
+
+
+/* New class for the button's dynamic style */
+#top button.dynamic-gradient {
+    /* The background and border will be set by JavaScript */
+    border: 3px solid;
+    color: white;
+}
+
+/* Animated button appearance */
+#top button.fade-in {
+    opacity: 1;
+    transition: opacity 1.5s ease-out;
+}
+
+/* Background blur and text scale when "Read More" is active */
+.show-full-content {
+    backdrop-filter: blur(10px);
+}
+
+.show-full-content #top h1, .show-full-content #top p {
+    transform: scale(1.1);
+    transition: transform 0.5s ease-in-out;
+}
+
+/* Ensure text is initially invisible and blurred */
+#top h1, #top p {
+    text-align: center;
+    position: relative;
+    margin: 0; 
+    opacity: 0;
+    filter: blur(10px);
+    transition: all 1.5s ease-out;
+    color: white;
+    line-height: 1.2;
+    /* Add the following styles to prevent text from overflowing */
+    box-sizing: border-box; 
+    padding: 10px; /* Add padding to prevent text from overflowing the edges */
+}
+
+/* Animated class */
+#top h1.clarify-in, #top p.clarify-in{
+    opacity: 1;
+    filter: blur(0); /* Remove the blur */
+}
+
+
+#planet-container img.hover {
+    opacity: 1;
+    transform: scale(2.5);
+    animation: rotate 10s linear infinite; 
+}
+.planetName{
+    color: white;
+    font-size: 1.15rem;
+    width: 50%;
+    font-family: "Montserrat", sans-serif;
+}
+
+.planetButton {
+    /* We continue to use flexbox for alignment */
+    display: flex;
+    justify-content: flex-start;
+    /* The transition stays here, but for the transform property */
+    transition: all 2s ease;
+    width: 100%;
+    height: 2.3rem;
+    border-radius: 10px;
+    padding: 0.3rem;
+    opacity: 0.2;
+}
+
+#planet-container img {
+    width: 150px; /* or your preferred size */
+    height: 150px; /* or your preferred size */
+    opacity: 0.3;
+    flex-shrink: 0;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+@keyframes rotate {
+  from {
+    transform: scale(2.5) rotate(0deg);
+  }
+  to {
+    transform: scale(2.5) rotate(360deg);
+  }
+}
+
+
+
+
+/* Apply the animated transition to the img tag */
+.buttonPlanet {
+    width: 15%;
+    border-radius: 50%;
+    /* Add transform for animated movement */
+    transition: transform 2s ease;
+}
+
+/* When the .right-aligned class is added to the button, slide the inner image to the right */
+.planetButton.right-aligned .buttonPlanet {
+    /* Moves it to the right based on the button's width */
+    transform: translateX(570%) rotate(360deg); 
+}
+
+.planetButton.right-aligned {border: 3px solid; opacity: 1;}
+
+.planetButton.right-aligned .planetName {transform: translateX(100px);}
+
+/* burst animation */
+.planetName.burst-shifted {
+    position: relative;
+    left: 100px; /* Or your desired shift amount */
+    animation: burstEffect 0.8s ease-in-out; 
+}
+
+/* burst animation (from previous answer) */
+@keyframes burstEffect {
+    0% { transform: scale(1) rotate(0deg); opacity: 1; }
+    25% { transform: scale(1.1) rotate(2deg); opacity: 1; }
+    50% { transform: scale(1) rotate(-2deg); opacity: 1; }
+    75% { transform: scale(1.1) rotate(2deg); opacity: 1; }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+/* Fluid gradient animations for the planets */
+#mars.right-aligned {
+    background: linear-gradient(90deg, #C1440E, #FF7B0F, #F4A460, #FF7B0F, #C1440E);
+    background-size: 400% 400%;
+    animation: gradientFlow 5s ease-in-out infinite;
+    border-color: #FF7B0F;
+}
+
+/* Mercury button */
+#mercury.right-aligned {
+    background: linear-gradient(90deg, #9C897B, #B4A496, #D4C3B5, #B4A496, #9C897B);
+    background-size: 400% 400%;
+    animation: gradientFlow 5s ease-in-out infinite;
+    border-color: #D4C3B5;
+}
+
+/* Venus button */
+#venus.right-aligned {
+    background: linear-gradient(90deg, #FAD6A5, #F5B05A, #D69145, #F5B05A, #FAD6A5);
+    background-size: 400% 400%;
+    animation: gradientFlow 5s ease-in-out infinite;
+    border-color: #F5B05A;
+}
+
+/* Earth button */
+#earth.right-aligned {
+    background: linear-gradient(90deg, #3A73AA, #5BA3E2, #7AC9E6, #5BA3E2, #3A73AA);
+    background-size: 400% 400%;
+    animation: gradientFlow 5s ease-in-out infinite;
+    border-color: #7AC9E6;
+}
+
+/* Jupiter button */
+#jupiter.right-aligned {
+    background: linear-gradient(90deg, #C4914F, #E5C397, #F2E4D5, #E5C397, #C4914F);
+    background-size: 400% 400%;
+    animation: gradientFlow 5s ease-in-out infinite;
+    border-color: #E5C397;
+}
+
+/* Saturn button */
+#saturn.right-aligned {
+    background: linear-gradient(90deg, #D4B483, #EAC799, #F5E0C2, #EAC799, #D4B483);
+    background-size: 400% 400%;
+    animation: gradientFlow 5s ease-in-out infinite;
+    border-color: #EAC799;
+}
+
+/* Uranus button */
+#uranus.right-aligned {
+    background: linear-gradient(90deg, #A8D8D8, #C8E8E8, #E0F2F2, #C8E8E8, #A8D8D8);
+    background-size: 400% 400%;
+    animation: gradientFlow 5s ease-in-out infinite;
+    border-color: #C8E8E8;
+}
+
+/* Neptune button */
+#neptune.right-aligned {
+    background: linear-gradient(90deg, #3B6B8F, #4A84B3, #599ED7, #4A84B3, #3B6B8F);
+    background-size: 400% 400%;
+    animation: gradientFlow 5s ease-in-out infinite;
+    border-color: #599ED7;
+}
+
+/* Animation definition (only needs to be defined once) */
+@keyframes gradientFlow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+
+@keyframes shadowbig {
+  0% {
+    filter: drop-shadow(0 0 11px currentColor);
+  }
+  50% {
+    filter: drop-shadow(0 0 22px currentColor);
+  }
+  100% {
+    filter: drop-shadow(0 0 11px currentColor);
+  }
+}
+
+/* Her gezegen için dönme ve gölge animasyonlarını birleştiren yeni CSS kuralları */
+
+#planet-container img.hover.mercury-shadow {
+  color: #c8b9b4; /* `currentColor` için rengi tanımla */
+  animation: rotate 10s linear infinite, shadowbig 3s infinite;
+}
+
+#planet-container img.hover.venus-shadow {
+  color: #e5a458;
+  animation: rotate 10s linear infinite, shadowbig 3s infinite;
+}
+
+#planet-container img.hover.earth-shadow {
+  color: #69a7c3;
+  animation: rotate 10s linear infinite, shadowbig 3s infinite;
+}
+
+#planet-container img.hover.mars-shadow {
+  color: #c85e4d;
+  animation: rotate 10s linear infinite, shadowbig 3s infinite;
+}
+
+#planet-container img.hover.jupiter-shadow {
+  color: #d49a62;
+  animation: rotate 10s linear infinite, shadowbig 3s infinite;
+}
+
+#planet-container img.hover.saturn-shadow {
+  color: #e0c897;
+  animation: rotate 10s linear infinite, shadowbig 3s infinite;
+}
+
+#planet-container img.hover.uranus-shadow {
+  color: #b0e0e6;
+  animation: rotate 10s linear infinite, shadowbig 3s infinite;
+}
+
+#planet-container img.hover.neptune-shadow {
+  color: #5587f0;
+  animation: rotate 10s linear infinite, shadowbig 3s infinite;
+}
+
